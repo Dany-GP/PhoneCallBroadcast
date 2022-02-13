@@ -27,15 +27,20 @@ public class MainActivity extends AppCompatActivity {
         txtMessage=findViewById(R.id.txtMessage);
         btnSave=findViewById(R.id.btnSave);
 
-        broadcastPhoneNumber = new BroadcastPhoneNumber();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_BOOT_COMPLETED);
-        intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        intentFilter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
+        //intentFilter.addAction(Intent.ACTION_CALL);
+        broadcastPhoneNumber = new BroadcastPhoneNumber();
         registerReceiver(broadcastPhoneNumber, intentFilter);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*broadcastPhoneNumber = new BroadcastPhoneNumber(
+                        txtPhoneNumber.getText().toString(),
+                        txtMessage.getText().toString());
+                registerReceiver(broadcastPhoneNumber, intentFilter);*/
 
             }
         });
