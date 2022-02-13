@@ -27,7 +27,7 @@ public class BroadcastPhoneNumber extends BroadcastReceiver {
                 }
 
                 case TelephonyManager.CALL_STATE_OFFHOOK:{
-                    
+
                     break;
                 }
 
