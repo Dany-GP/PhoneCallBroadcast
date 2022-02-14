@@ -43,11 +43,13 @@ public class BroadcastPhoneNumber extends BroadcastReceiver {
                 @Override
                 public void onCallStateChanged(int state, String incomingNumber) {
                     super.onCallStateChanged(state, incomingNumber);
-                    System.out.println("incomingNumber : "+ incomingNumber);
-                    Toast.makeText(context.getApplicationContext(), "incomingNumber : "+incomingNumber, Toast.LENGTH_SHORT).show();
+
                     if(state == TelephonyManager.CALL_STATE_RINGING) {
+                        System.out.println("incomingNumber : "+ incomingNumber);
+                        Toast.makeText(context.getApplicationContext(), "incomingNumber : "+incomingNumber, Toast.LENGTH_SHORT).show();
                         phoneNumber = incomingNumber;
                         sendMessage();
+                        return;
                     }
                 }
             },PhoneStateListener.LISTEN_CALL_STATE);
