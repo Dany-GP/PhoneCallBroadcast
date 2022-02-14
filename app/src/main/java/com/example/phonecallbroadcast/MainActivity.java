@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
         //intentFilter.addAction(Intent.ACTION_CALL);
         broadcastPhoneNumber = new BroadcastPhoneNumber();
+
         registerReceiver(broadcastPhoneNumber, intentFilter);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -45,9 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
                 String phoneNumber = txtPhoneNumber.getText().toString();
                 String message = txtMessage.getText().toString();
-
-
-
 
 
             }
