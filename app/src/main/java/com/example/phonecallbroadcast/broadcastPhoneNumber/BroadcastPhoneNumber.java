@@ -16,6 +16,13 @@ import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.room.Room;
+
+import com.example.phonecallbroadcast.database.AppDatabase;
+import com.example.phonecallbroadcast.database.DAOMessageContact;
+import com.example.phonecallbroadcast.database.MessageContact;
+
+import java.util.List;
 
 public class BroadcastPhoneNumber extends BroadcastReceiver {
 
@@ -45,11 +52,21 @@ public class BroadcastPhoneNumber extends BroadcastReceiver {
                     super.onCallStateChanged(state, incomingNumber);
 
                     if(state == TelephonyManager.CALL_STATE_RINGING) {
-                        System.out.println("incomingNumber : "+ incomingNumber);
-                        Toast.makeText(context.getApplicationContext(), "incomingNumber : "+incomingNumber, Toast.LENGTH_SHORT).show();
-                        phoneNumber = incomingNumber;
-                        sendMessage();
-                        return;
+                        //Preguntar a la base de datos
+                        AppDatabase db = Room.databaseBuilder(context.getApplicationContext(),
+                                AppDatabase.class, "MessageContact").allowMainThreadQueries().build();
+                        DAOMessageContact dao = db.DaoMessageContact();
+                        List<MessageContact> messageList = dao.getAll();
+                        for (MessageContact mc:messageList) {
+                            if(mc.telephone.equals(incomingNumber)) {
+                                System.out.println("incomingNumber : " + incomingNumber);
+                                Toast.makeText(context.getApplicationContext(), "mensaje enviado: " + incomingNumber, Toast.LENGTH_SHORT).show();
+                                phoneNumber = incomingNumber;
+                                sendMessage(mc.telephone,mc.message);
+                                return;
+                            }
+                        }
+
                     }
                 }
             },PhoneStateListener.LISTEN_CALL_STATE);
@@ -82,11 +99,11 @@ public class BroadcastPhoneNumber extends BroadcastReceiver {
 
     }
 
-    private void sendMessage(){
+    private void sendMessage(String number, String newMessage){
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber,
+        smsManager.sendTextMessage(number,
                 null,
-                message,
+                newMessage,
                 null, null);
     }
 
